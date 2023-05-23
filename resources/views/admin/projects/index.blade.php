@@ -9,7 +9,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"> {{$project->title}}</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Developed by: {{$project->developers}}</h6>  
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Developed by: {{$project->developers}}</h6>
+                    <small>Tipo: <strong>{{$project->type->name ?? 'nessun tipo'}}</strong></small>  
                     <p class="card-text">{{$project->description}}</p>
                     <a href=" {{route('admin.projects.show', $project->slug)}} " class="card-link">Card link</a>
                     <a href=" {{route('admin.')}} " class="card-link">Torna alla Dashboard</a>

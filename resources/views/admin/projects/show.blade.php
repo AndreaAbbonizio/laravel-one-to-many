@@ -6,6 +6,10 @@
 
         <small>Developed by: {{$project->developers}}</small>
 
+        <br>
+
+        <small>Tipo: {{$project->type->name ?? 'nessun tipo'}}</small>
+
         <hr>
 
         <h2>Descrizione progetto:</h2>

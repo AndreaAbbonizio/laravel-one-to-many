@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -29,7 +30,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $types = Type::all();
+        return view('admin.projects.create', compact('types'));
     }
 
     /**
@@ -47,6 +49,8 @@ class ProjectController extends Controller
         $newProject =  new Project();
 
         $newProject->title = $formData['title'];
+        $newProject->type_id = $formData['type_id'];
+
         $newProject->description = $formData['description'];
         $newProject->link_repository = $formData['link_repository'];
         $newProject->link_image = $formData['link_image'];
@@ -78,7 +82,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
@@ -128,6 +133,7 @@ class ProjectController extends Controller
 
         $validator = Validator::make($formData, [
             'title' => 'required|min:3',
+            'type_id' => 'nullable|exists:types,id',
             'description' => 'required',
             'link_repository' => 'required',
             'link_image' => 'nullable',
@@ -135,6 +141,7 @@ class ProjectController extends Controller
         ], [
             'title.required' => 'Il titolo deve essere inserito',
             'title.min' => 'Il titolo deve avere :min caratteri',
+            'type_id.exists' => 'Il tipo deve essere presente nel nostro sito',
             'description.required' => 'La descrizione deve essere inserita',
             'link_repository.required' => 'Questo campo non può rimanere vuoto',
             'developers.required' => 'Questo campo non può rimanere vuoto',

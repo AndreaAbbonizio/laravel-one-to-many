@@ -53,6 +53,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.projects.index')}}">Projects</a>
                         </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('admin.types.index')}}">Types</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -101,7 +104,7 @@
               <li class="nav-item"><a href="{{route('welcome')}} " class="nav-link px-2 text-muted">Home</a></li>
               <li class="nav-item"><a href="{{route('admin.')}}" class="nav-link px-2 text-muted">Dashboard</a></li>
               <li class="nav-item"><a href="{{route('admin.projects.index')}}" class="nav-link px-2 text-muted">Projects</a></li>
-              
+              <li class="nav-item"><a href="{{route('admin.types.index')}}" class="nav-link px-2 text-muted">Types</a></li>
             </ul>
 
             <p class="text-center text-muted">&copy; 2021 Company, Inc</p>
