@@ -6,6 +6,12 @@
 
         <small>Developed by: {{$project->developers}}</small>
 
+        <div class="d-flex py-3">
+          @foreach($project->technologies as $technology)
+            <span class="badge rounded-pill mx-1" style="background-color: {{$technology->color}}">{{$technology->name}}</span>
+          @endforeach
+        </div>
+
         <br>
 
         <small>Tipo: {{$project->type->name ?? 'nessun tipo'}}</small>
@@ -41,46 +47,37 @@
             </div>
             
       
-            <div id="delete-button" class="btn btn-danger fw-bold">Cancella progetto</div>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Elimina
+            </button>
       
             
       
         </div>
     </div>
 
-    <div id="delete-modal" class="hidden">
-
-        <div id="delete-modal-inner">
-          <p>
-            Sei sicuro di voler eliminare il progetto?
-          </p>
-          <form action="{{route('admin.projects.destroy', $project)}}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Elimina</button>
-          </form>
-        
-          <button id="delete-modal-close" class="btn btn-secondary">Chiudi</button>
-      
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Elimina il progetto</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Sei sicuro di voler eliminare il progetto "{{$project->title}}"
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <form action="{{route('admin.projects.destroy', $project)}}" method="POST">
+              @csrf
+              @method('DELETE')
+            
+              <button type="submit" class="btn btn-danger">Elimina il progetto</button>
+            </form>
+          </div>
         </div>
-    </div>
+      </div>
+  </div>
 @endsection
 
 
-@section('script')
-<script type="text/javascript">
-
-    let deleteModalEl = document.getElementById('delete-modal');
-    
-    document.getElementById('delete-button').onclick = function() {
-      deleteModalEl.classList.remove('hidden');
-    };
-    
-    
-    document.getElementById('delete-modal-close').onclick = function () {
-      deleteModalEl.classList.add('hidden');
-    }
-    
-
-</script>
-@endsection

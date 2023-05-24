@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,9 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return view('admin.projects.index', compact('projects'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.index', compact('projects', 'technologies'));
     }
 
     /**
@@ -31,7 +34,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -57,8 +62,14 @@ class ProjectController extends Controller
         $newProject->developers = $formData['developers'];
         $newProject->slug =  Str::slug($newProject->title, '-');
 
-
         $newProject->save();
+
+        if (array_key_exists('technologies', $formData)) {
+
+            $newProject->technologies()->attach($formData['technologies']);
+        }
+
+
 
         return redirect()->route('admin.projects.show', $newProject->slug);
     }
@@ -71,7 +82,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('admin.projects.show', compact('project'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.show', compact('project', 'technologies'));
     }
 
     /**
@@ -83,7 +96,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -100,10 +115,16 @@ class ProjectController extends Controller
         $formData = $request->all();
 
 
+        $project->slug =  Str::slug($project->title, '-');
 
         $project->update($formData);
 
-        $project->slug =  Str::slug($project->title, '-');
+
+        if (array_key_exists('technologies', $formData)) {
+            $project->technologies()->sync($formData['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
 
 
 
