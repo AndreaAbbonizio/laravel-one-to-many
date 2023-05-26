@@ -25,7 +25,7 @@
 
 
     <div class="d-flex justify-content-around my-5">
-        <a href="{{route('admin.technologies.edit', $technology)}}" class="btn btn-primary">Modifica il tipo</a>
+        <a href="{{route('admin.technologies.edit', $technology)}}" class="btn btn-primary">Modifica la tecnologia</a>
         
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Elimina

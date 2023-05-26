@@ -5,7 +5,7 @@
 
 <div class="container">
     <h1 class="my-3 text-center">
-        Tipo di progetto
+        Tecnologie dei progetti
     </h1>
 
     <table class="table table-striped">
@@ -37,7 +37,7 @@
 
       <div class="my-5">
         <div class="new-project">
-            <a href="{{route('admin.technologies.create')}}">Aggiungi nuovo tipo</a>
+            <a href="{{route('admin.technologies.create')}}">Aggiungi nuova tecnologia</a>
         </div>
     </div>
 </div>

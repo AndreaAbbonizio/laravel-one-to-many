@@ -4,7 +4,7 @@
     <div class="container">
         <h1 class="my-3">Aggiungi un nuovo progetto</h1>
 
-        <form action="{{route('admin.projects.store')}}" method="POST" class="py-5">
+        <form action="{{route('admin.projects.store')}}" method="POST" enctype="multipart/form-data" class="py-5">
             @csrf
         
             <div class="mb-3">
@@ -67,12 +67,12 @@
             </div>
         
             <div class="mb-3">
-              <label for="link_image">Link immagine</label>
-              <input class="form-control @error('link_image') is-invalid @enderror" type="text" name="link_image" id="link_image"  value="{{old('link_image')}}">
+              <label for="link_image">Immagine di copertina</label>
+              <input type="file" id="link_image" name="link_image" class="form-control @error('link_image') is-invalid @enderror" >
               @error('link_image')
                 <div class="invalid-feedback">
                   {{$message}}
-                </div>
+                </div>    
               @enderror
             </div>
         

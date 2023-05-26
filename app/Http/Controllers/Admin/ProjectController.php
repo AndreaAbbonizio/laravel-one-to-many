@@ -9,6 +9,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProjectController extends Controller
@@ -52,6 +53,15 @@ class ProjectController extends Controller
         $formData = $request->all();
 
         $newProject =  new Project();
+
+        if ($request->hasFile('link_image')) {
+
+
+            $path = Storage::put('project_images', $request->link_image);
+
+
+            $formData['link_image'] = $path;
+        }
 
         $newProject->title = $formData['title'];
         $newProject->type_id = $formData['type_id'];
@@ -110,9 +120,25 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+
         $this->validation($request);
 
+
         $formData = $request->all();
+
+
+        if ($request->hasFile('link_image')) {
+
+            if ($project->link_image) {
+
+                Storage::delete($project->link_image);
+            }
+
+            $path = Storage::put('project_images', $request->link_image);
+
+            $formData['link_image'] = $path;
+        }
+
 
 
         $project->slug =  Str::slug($project->title, '-');
@@ -141,6 +167,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->link_image) {
+            Storage::delete($project->link_image);
+        }
         $project->delete();
 
 
@@ -157,7 +186,7 @@ class ProjectController extends Controller
             'type_id' => 'nullable|exists:types,id',
             'description' => 'required',
             'link_repository' => 'required',
-            'link_image' => 'nullable',
+            'link_image' => 'nullable|image|max:4096',
             'developers' => 'required',
         ], [
             'title.required' => 'Il titolo deve essere inserito',
@@ -165,6 +194,8 @@ class ProjectController extends Controller
             'type_id.exists' => 'Il tipo deve essere presente nel nostro sito',
             'description.required' => 'La descrizione deve essere inserita',
             'link_repository.required' => 'Questo campo non può rimanere vuoto',
+            'link_image.max' => "La dimensione del file è troppo grande",
+            'link_image.image' => "Il file deve essere di tipo immagine",
             'developers.required' => 'Questo campo non può rimanere vuoto',
 
         ])->validate();
